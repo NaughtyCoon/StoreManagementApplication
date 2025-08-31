@@ -1,35 +1,33 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <title>Мой магазин!</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            margin-top: 100px;
-            background-color: #f0f8ff;
-        }
-        h1 {
-            color: #2c3e50;
-            font-size: 3em;
-        }
-        .heart {
-            color: #e74c3c;
-            font-size: 2em;
-        }
-    </style>
-</head>
-<body>
-<h1>Hello, world! 🌍</h1>
-<p>Добро пожаловать в мой учебный проект!</p>
-<p>Сервер работает и виден в локальной сети! 🎉</p>
-<p>Привет жене! <span class="heart">❤️</span></p>
-<p><br>Дип и Чел</p>
-<p><small>IP: <span id="ip"></span></small></p>
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Мой магазин!</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                text-align: center;
+                margin-top: 80px;
+                background-color: #f0f8ff;
+            }
+            h1 {
+                color: #2c3e50;
+                font-size: 60px;
+            }
+            p {
+                font-size: 60px;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Hello, world! 🌍</h1>
+        <p>Добро пожаловать в мой учебный проект!</p>
+        <p>Сервер работает и виден в локальной сети!</p>
+        <p><small>IP: <span id="ip"></span></small></p>
 
-<script>
-    // Показываем IP адрес страницы
-    document.getElementById('ip').textContent = window.location.hostname;
-</script>
-</body>
+        <script>
+            document.getElementById('ip').textContent = window.location.hostname;
+        </script>
+    </body>
 </html>
