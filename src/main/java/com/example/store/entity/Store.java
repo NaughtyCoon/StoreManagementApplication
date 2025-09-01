@@ -29,9 +29,11 @@ public class Store {
     @Column
     private String location;
 
+    @Column
+    private String email;
+
     @LastModifiedDate                   // Автоматическая дата последнего обновления строки (записи) в БД
     @Column
     private LocalDateTime updatedAt;
-
 
 }

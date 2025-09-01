@@ -26,7 +26,7 @@ public class StoreService {
 
     public StoreResponseDto createStore(@Valid StoreRequest request){
 
-        Store store = new Store(UUID.randomUUID(), request.getName(), request.getLocation(), null);
+        Store store = new Store(UUID.randomUUID(), request.getName(), request.getLocation(), request.getEmail(), null);
 
         storeRepository.saveAndFlush(store);
 

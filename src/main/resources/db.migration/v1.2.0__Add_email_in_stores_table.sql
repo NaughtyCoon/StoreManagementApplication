@@ -1,0 +1,1 @@
+ALTER TABLE stores_db ADD COLUMN email TEXT;

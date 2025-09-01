@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 @SpringBootTest
 @Transactional
@@ -31,7 +30,7 @@ class StoreManagementApplicationTests extends TestContainerInitialization {
     @Test
     void createStore_whenNameIsBlank_thenThrow() {
 
-        StoreRequest storeRequest = createStoreRequest("", "ул. Урванцева");
+        StoreRequest storeRequest = createStoreRequest("", "ул. Урванцева", "mail@somemail.ml");
 
         Assertions.assertThrows(ConstraintViolationException.class, ()-> service.createStore(storeRequest));
 
@@ -40,16 +39,16 @@ class StoreManagementApplicationTests extends TestContainerInitialization {
     @Test
     void createStore_whenLocationIsBlank_thenThrow() {
 
-        StoreRequest storeRequest = createStoreRequest("Красный Яр", "");
+        StoreRequest storeRequest = createStoreRequest("Красный Яр", "", "mail@somemail.ml");
 
         Assertions.assertThrows(ConstraintViolationException.class, ()-> service.createStore(storeRequest));
 
     }
 
     @Test
-    void create_whenNameAndLocationNotBlank_thenCreate() {
+    void create_whenNameAndLocationAndEmailNotBlank_thenCreate() {
 
-        StoreRequest storeRequest = createStoreRequest("Пятёрочка", "ул. Урванцева");
+        StoreRequest storeRequest = createStoreRequest("Пятёрочка", "ул. Урванцева", "mail@somemail.ml");
 
         StoreResponseDto storeResponseDto = Assertions.assertDoesNotThrow(() -> service.createStore(storeRequest));
 
@@ -57,8 +56,8 @@ class StoreManagementApplicationTests extends TestContainerInitialization {
 
     }
 
-    private StoreRequest createStoreRequest(String name, String location) {
-        return new StoreRequest(name, location);
+    private StoreRequest createStoreRequest(String name, String location, String email) {
+        return new StoreRequest(name, location, email);
     }
 
 }
