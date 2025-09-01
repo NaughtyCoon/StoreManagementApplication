@@ -20,4 +20,5 @@ public class StoreRequest {
     @Schema
     @NotBlank
     private String location;
+
 }
