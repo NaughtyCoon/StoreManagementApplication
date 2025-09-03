@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Schema(description = "DTO с основной информацией о магазине")
+@Schema(description = "DTO с основной информацией для работы со списком всех магазинов")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class StoreResponseDto { // TODO: унаследоваться от AllResponseDto
+public class AllStoresResponseDto {
 
     @Schema(description = "Идентификатор магазина")
     private UUID id;
@@ -21,8 +21,5 @@ public class StoreResponseDto { // TODO: унаследоваться от AllRe
 
     @Schema(description = "Местоположение магазина")
     private String location;
-
-    @Schema(description = "Электронная почта магазина")
-    private String email;
 
 }

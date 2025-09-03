@@ -1,1 +1,1 @@
-ALTER TABLE stores_db ADD COLUMN email TEXT;
+ALTER TABLE stores ADD COLUMN email TEXT;
