@@ -24,7 +24,7 @@ public class StoreRequest {
     private String location;
 
     @Schema
-    @JsonProperty("location")
+    @JsonProperty("email")
     @NotBlank
     private String email;
 

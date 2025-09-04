@@ -46,7 +46,7 @@ public class StoreController {
 
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/update/{id}")
     public ResponseEntity<StoreResponseDto> updateStore(@PathVariable UUID id, @Valid @RequestBody StoreRequest request) {
 
         StoreResponseDto storeResponseDto = storeService.updateById(id, request);
@@ -55,7 +55,7 @@ public class StoreController {
 
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<AllStoresResponseDto>> findAllStores() {
 
         List<AllStoresResponseDto> allStoresResponses = storeService.findAllStores();
