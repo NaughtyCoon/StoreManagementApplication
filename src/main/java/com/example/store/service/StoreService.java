@@ -41,6 +41,7 @@ public class StoreService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteStore(UUID storeId){
 
+        storeRepository.findById(storeId).orElseThrow();
         storeRepository.deleteById(storeId);
 
     }

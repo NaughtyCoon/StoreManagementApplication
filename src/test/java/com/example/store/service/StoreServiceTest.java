@@ -15,9 +15,12 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class StoreServiceTest extends TestContainerInitialization {
@@ -67,7 +70,7 @@ class StoreServiceTest extends TestContainerInitialization {
 
         StoreResponseDto storeResponseDto = Assertions.assertDoesNotThrow(() -> service.createStore(storeRequest));
 
-        Assertions.assertEquals(storeRequest.getName(), storeResponseDto.getName());
+        assertEquals(storeRequest.getName(), storeResponseDto.getName());
 
     }
 
@@ -97,7 +100,50 @@ class StoreServiceTest extends TestContainerInitialization {
     @Test
     void updateStore_whenStoreExists_thenUpdate() {
 
+        UUID id = createStore("Пятёрочка", "Ленина", "mail@somemail.ml").getId();
 
+        StoreRequest storeRequest = createStoreRequest("Fix-price", "Урванцева", "mail@mailer.ml");
+
+        assertEquals("Fix-price", service.updateById(id, storeRequest).getName());
+
+    }
+
+    @Test
+    void deleteStore_whenStoreNotFoundById_thenThrow() {
+
+        UUID id = UUID.randomUUID();
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> service.deleteStore(id));
+
+    }
+
+    @Test
+    void deleteStore_whenStoreExists_thenDelete() {
+
+        UUID id = createStore("Пятёрочка", "Ленина", "mail@somemail.ml").getId();
+
+        service.deleteStore(id);
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> service.findById(id));
+
+    }
+
+    @Test
+    void findById_whenStoreNotFoundById_thenThrow() {
+
+        UUID id = UUID.randomUUID();
+
+        Assertions.assertThrows(NoSuchElementException.class, () -> service.findById(id));
+
+    }
+
+    @Test
+    void findById_whenStoreIsFoundById_thenReturnAdequateResponseDto() {
+
+        UUID id = createStore("Пятёрочка", "Ленина", "mail@somemail.ml").getId();
+
+        assertEquals("StoreResponseDto", service.findById(id).getClass().getSimpleName());
+        assertEquals(id, service.findById(id).getId());
 
     }
 
