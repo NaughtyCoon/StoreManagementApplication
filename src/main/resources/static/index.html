@@ -1,44 +1,49 @@
-        <!DOCTYPE html>
-        <html lang="ru">
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-            <title>Редактирование магазина</title>
-            <style>
-                .form-container {
-                    max-width: 500px;
-                    margin: 20px auto;
-                    padding: 20px;
-                    border: 1px solid #ddd;
-                    border-radius: 8px;
-                }
-                .form-group {
-                    margin-bottom: 15px;
-                }
-                label {
-                    display: block;
-                    margin-bottom: 5px;
-                    font-weight: bold;
-                }
-                input {
-                    width: 100%;
-                    padding: 8px;
-                    border: 1px solid #ccc;
-                    border-radius: 4px;
-                }
-                button {
-                    padding: 10px 20px;
-                    background-color: #007bff;
-                    color: white;
-                    border: none;
-                    border-radius: 4px;
-                    cursor: pointer;
-                }
-                button:hover {
-                    background-color: #0056b3;
-                }
-            </style>
-        </head>
-        <body>
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title>Редактирование магазина</title>
+        <style>
+            .form-container {
+                max-width: 500px;
+                margin: 20px auto;
+                padding: 20px;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+            }
+
+            .form-group {
+                margin-bottom: 15px;
+            }
+
+            label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+
+            input {
+                width: 100%;
+                padding: 8px;
+                border: 1px solid #ccc;
+                border-radius: 4px;
+            }
+
+            button {
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
         <div class="form-container">
             <h2>Редактирование магазина</h2>
 
@@ -54,23 +59,13 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="address">Адрес:</label>
-                    <input type="text" id="address" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">Телефон:</label>
-                    <input type="tel" id="phone">
+                    <label for="location">Адрес:</label>
+                    <input type="text" id="location" required>
                 </div>
 
                 <div class="form-group">
                     <label for="email">Email:</label>
                     <input type="email" id="email">
-                </div>
-
-                <div class="form-group">
-                    <label for="workingHours">Часы работы:</label>
-                    <input type="text" id="workingHours">
                 </div>
 
                 <button type="submit">Обновить магазин</button>
@@ -80,20 +75,21 @@
         </div>
 
         <script>
-            document.getElementById('updateForm').addEventListener('submit', async function(e) {
+            document.getElementById('updateForm').addEventListener('submit', async function (e) {
                 e.preventDefault();
 
                 const storeId = document.getElementById('storeId').value;
                 const formData = {
                     name: document.getElementById('name').value,
-                    address: document.getElementById('address').value,
-                    phone: document.getElementById('phone').value,
-                    email: document.getElementById('email').value,
-                    workingHours: document.getElementById('workingHours').value
+                    location: document.getElementById('location').value,
+                    email: document.getElementById('email').value
                 };
 
                 try {
-                    const response = await fetch(`http://localhost:8080/update/${storeId}`, {
+                    console.log("Sending request to:", `http://localhost:8080/stores/update/${storeId}`);
+                    console.log("Request data:", formData);
+
+                    const response = await fetch(`http://localhost:8080/stores/update/${storeId}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
@@ -106,8 +102,8 @@
                         const result = await response.json();
                         document.getElementById('message').innerHTML =
                             `<p style="color: green;">Магазин успешно обновлен!</p>
-                         <p>Название: ${result.name}</p>
-                         <p>Адрес: ${result.address}</p>`;
+                                 <p>Название: ${result.name}</p>
+                                 <p>Адрес: ${result.location}</p>`;
                     } else {
                         document.getElementById('message').innerHTML =
                             `<p style="color: red;">Ошибка: ${response.status} ${response.statusText}</p>`;
@@ -118,5 +114,5 @@
                 }
             });
         </script>
-        </body>
-        </html>
+    </body>
+</html>

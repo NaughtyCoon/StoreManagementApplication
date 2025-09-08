@@ -47,7 +47,7 @@ public class StoreController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable UUID id, @Valid @RequestBody StoreRequest request) {
+    public ResponseEntity<StoreResponseDto> updateStore(@PathVariable("id") UUID id, @Valid @RequestBody StoreRequest request) {
 
         StoreResponseDto storeResponseDto = storeService.updateById(id, request);
 

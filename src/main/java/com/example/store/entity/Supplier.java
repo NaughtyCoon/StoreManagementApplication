@@ -14,12 +14,12 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Data
-@Entity(name="stores")
+@Entity(name="suppliers")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @EnableJpaAuditing
-public class Store {
+public class Supplier {
 
     @Id                                 // Ключ в базе данных
     @Column                             // Название колонки
@@ -29,10 +29,16 @@ public class Store {
     private String name;
 
     @Column
-    private String location;
+    private String email;
 
     @Column
-    private String email;
+    private String phone;
+
+    @Column
+    private String address;
+
+    @Column
+    private String website;
 
     @LastModifiedDate                   // Автоматическая дата последнего обновления строки (записи) в БД
     @Column

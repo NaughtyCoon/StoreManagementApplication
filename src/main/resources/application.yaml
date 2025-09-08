@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url:
-    username:
-    password:
+    url: jdbc:postgresql://localhost:5432/store_db
+    username: postgres
+    password: JennyLovesPizza
 
   jpa:
     hibernate:
@@ -14,10 +14,15 @@ spring:
 
     properties:
       hibernate:
-      format_sql: true
+        format_sql: true
+
+  web:
+    resources:
+      add-mappings: false
 
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
     path: /swagger-ui.html
+    enabled: true

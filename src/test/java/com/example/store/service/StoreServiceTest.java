@@ -61,7 +61,7 @@ class StoreServiceTest extends TestContainerInitialization {
     }
 
     @Test
-    void create_whenNameAndLocationAndEmailNotBlank_thenCreate() {
+    void createStore_whenNameAndLocationAndEmailNotBlank_thenCreate() {
 
         StoreRequest storeRequest = createStoreRequest("Пятёрочка", "ул. Урванцева", "mail@mailer.ml");
 
@@ -95,7 +95,7 @@ class StoreServiceTest extends TestContainerInitialization {
     }
 
     @Test
-    void updateStore_whenStoreExist_thenUpdate() {
+    void updateStore_whenStoreExists_thenUpdate() {
 
 
 
