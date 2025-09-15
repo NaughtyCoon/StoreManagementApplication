@@ -8,21 +8,20 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
-import java.time.LocalDateTime;
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Data
-@Entity(name="suppliers")
+@Entity(name="products")
 @AllArgsConstructor
 @NoArgsConstructor
 @EqualsAndHashCode
 @EnableJpaAuditing
 @EntityListeners(AuditingEntityListener.class)
-public class Supplier {
+public class Product {
 
     @Id                                 // Ключ в базе данных
     @Column                             // Название колонки
@@ -32,19 +31,9 @@ public class Supplier {
     private String name;
 
     @Column
-    private String email;
+    private BigDecimal price;
 
     @Column
-    private String phone;
-
-    @Column
-    private String address;
-
-    @Column
-    private String website;
-
-    @LastModifiedDate                   // Автоматическая дата последнего обновления строки (записи) в БД
-    @Column
-    private LocalDateTime updatedAt;
+    private String category;
 
 }

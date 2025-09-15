@@ -1,10 +1,16 @@
 package com.example.store.service;
 
 import com.example.store.dto.AllStoresResponseDto;
+import com.example.store.dto.ProductResponseDto;
 import com.example.store.dto.StoreResponseDto;
+import com.example.store.entity.Product;
 import com.example.store.entity.Store;
+import com.example.store.entity.StoreProduct;
 import com.example.store.mapper.StoreMapper;
+import com.example.store.repository.ProductRepository;
+import com.example.store.repository.StoreProductRepository;
 import com.example.store.repository.StoreRepository;
+import com.example.store.request.ProductRequest;
 import com.example.store.request.StoreRequest;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.validation.Valid;
@@ -13,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -27,8 +34,14 @@ public class StoreService {
     @Autowired
     private StoreMapper storeMapper;
 
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
+    private StoreProductRepository storeProductRepository;
+
     @Transactional(rollbackFor = Exception.class)
-    public StoreResponseDto createStore(@Valid StoreRequest request){
+    public StoreResponseDto createStore(@Valid StoreRequest request) {
 
         Store store = new Store(UUID.randomUUID(), request.getName(), request.getLocation(), request.getEmail(), null);
 
@@ -39,14 +52,14 @@ public class StoreService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void deleteStore(UUID storeId){
+    public void deleteStore(UUID storeId) {
 
         storeRepository.findById(storeId).orElseThrow();
         storeRepository.deleteById(storeId);
 
     }
 
-    public StoreResponseDto findById(UUID storeId){
+    public StoreResponseDto findById(UUID storeId) {
 
         Store store = storeRepository.findById(storeId).orElseThrow();
 
@@ -73,11 +86,9 @@ public class StoreService {
 
         List<Store> stores = storeRepository.findAll();
 
-        List<AllStoresResponseDto> list = stores.stream()
+        return stores.stream()
                 .map(e -> storeMapper.mapToAllStoresResponseDto(e))
                 .toList();
-
-        return list;
 
     }
 
@@ -85,11 +96,9 @@ public class StoreService {
 
         List<Store> stores = storeRepository.findByLocation(location);
 
-        List<AllStoresResponseDto> listLocation = stores.stream()
+        return stores.stream()
                 .map(e -> storeMapper.mapToAllStoresResponseDto(e))
                 .toList();
-
-        return listLocation;
 
     }
 
@@ -104,7 +113,7 @@ public class StoreService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public StoreResponseDto copy(UUID storeId ) {
+    public StoreResponseDto copy(UUID storeId) {
 
         Store store = storeRepository.findById(storeId)
                 .orElseThrow();
@@ -117,4 +126,52 @@ public class StoreService {
 
     }
 
+    public List<ProductResponseDto> findAllProductByLocation(String street) {
+
+        // Шаг 1. Получаем все магазины
+        List<Store> allStores = storeRepository.findAll();
+
+        return allStores.stream()
+                .filter(e -> e.getLocation().contains(street)) // Шаг 2. Фильтруем магазины по указанной улице
+                .map(Store::getId)
+                .map(storeProductRepository::findByStoreId)
+                .flatMap(List::stream)
+                .map(StoreProduct::getProductId)
+                .map(productId -> productRepository.findById(productId)
+                        .orElseThrow())
+                .map(storeMapper::mapToProductResponseDto)
+                .distinct()
+                .toList(); // Шаг 3., собираем все товары из найденных магазинов
+
+    }
+
+    public List<ProductResponseDto> findUniqueProducts() {
+
+        List<Product> allProducts = productRepository.findAll();
+        List<ProductResponseDto> result = new ArrayList<>();
+
+        for (Product product : allProducts) {
+
+            int countStore = storeRepository.countStoresByProductId(product.getId());
+
+            if (countStore == 1) {
+                result.add(storeMapper.mapToProductResponseDto(product));
+            }
+
+        }
+
+        return result;
+
+    }
+
+    public ProductResponseDto createProduct(UUID storeId, ProductRequest request) {
+
+        Product product = new Product(UUID.randomUUID(), request.getName(), request.getPrice(), "some");
+
+        productRepository.saveAndFlush(product);
+
+        new StoreProduct(UUID.randomUUID(), storeId, product.getId());
+
+        return storeMapper.mapToProductResponseDto(product);
+    }
 }
