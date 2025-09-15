@@ -116,7 +116,7 @@ public class StoreController {
 
     }
 
-    @PostMapping("/product/{id}")
+    @PostMapping("/product/{storeId}")
     public ResponseEntity<ProductResponseDto> createProduct(@PathVariable UUID storeId,
                                                             @RequestBody ProductRequest request) {
 
