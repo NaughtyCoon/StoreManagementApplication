@@ -19,9 +19,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 @Service
 @Validated
@@ -39,6 +39,9 @@ public class StoreService {
 
     @Autowired
     private StoreProductRepository storeProductRepository;
+
+    private final Predicate<Product> PRODUCT_IS_UNIQUE =
+            product -> storeRepository.countStoresByProductId(product.getId()) == 1;
 
     @Transactional(rollbackFor = Exception.class)
     public StoreResponseDto createStore(@Valid StoreRequest request) {
@@ -148,21 +151,32 @@ public class StoreService {
     public List<ProductResponseDto> findUniqueProducts() {
 
         List<Product> allProducts = productRepository.findAll();
-        List<ProductResponseDto> result = new ArrayList<>();
 
-        for (Product product : allProducts) {
-
-            int countStore = storeRepository.countStoresByProductId(product.getId());
-
-            if (countStore == 1) {
-                result.add(storeMapper.mapToProductResponseDto(product));
-            }
-
-        }
-
-        return result;
+        return allProducts.stream()
+                .filter(PRODUCT_IS_UNIQUE)
+                .map(storeMapper::mapToProductResponseDto)
+                .toList();
 
     }
+
+//    public List<ProductResponseDto> findUniqueProductsOld() {
+//
+//        List<Product> allProducts = productRepository.findAll();
+//        List<ProductResponseDto> result = new ArrayList<>();
+//
+//        for (Product product : allProducts) {
+//
+//            int countStore = storeRepository.countStoresByProductId(product.getId());
+//
+//            if (countStore == 1) {
+//                result.add(storeMapper.mapToProductResponseDto(product));
+//            }
+//
+//        }
+//
+//        return result;
+//
+//    }
 
     public ProductResponseDto createProduct(UUID storeId, ProductRequest request) {
 
@@ -174,4 +188,5 @@ public class StoreService {
 
         return storeMapper.mapToProductResponseDto(product);
     }
+
 }
